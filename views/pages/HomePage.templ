@@ -1,0 +1,11 @@
+package pages
+
+import "williamsLab/views/layouts"
+
+var homeTitle = "Home"
+
+templ HomePage() {
+	@layouts.BaseLayout(homeTitle) {
+		<h1>Home Page</h1>
+	}
+}
