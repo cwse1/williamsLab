@@ -1,4 +1,4 @@
 *_templ.go
 .env
 bun.lock
-pb_data/
+./pb_data
