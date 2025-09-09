@@ -46,8 +46,11 @@ download-alpine:
 templ:
 	@$(TEMPL_BIN) generate
 
-css:
+css: updateDepends
 	@$(BUN_BIN) exec "tailwindcss -i $(STATIC_DIR)/css/input.css -o $(STATIC_DIR)/css/styles.css --minify"
+
+updateDepends:
+	@$(BUN_BIN) update tailwindcss@latest >/dev/null 2>&1
 
 serve: templ css
 	@$(GO_BIN) run ./cmd/main.go serve --http ${ROUTE}
