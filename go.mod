@@ -7,6 +7,7 @@ require github.com/pocketbase/pocketbase v0.29.2
 require (
 	github.com/Oudwins/tailwind-merge-go v0.2.0
 	github.com/a-h/templ v0.3.943
+	golang.org/x/text v0.27.0
 )
 
 require (
@@ -36,7 +37,6 @@ require (
 	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
-	golang.org/x/text v0.27.0 // indirect
 	modernc.org/libc v1.66.3 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.11.0 // indirect

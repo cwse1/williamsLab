@@ -17,6 +17,7 @@ TAILWIND_CONFIG := 'module.exports = {\n\
 }'
 
 ALPINE_URL := https://cdn.jsdelivr.net/npm/alpinejs@latest/dist/cdn.min.js
+HTMX_URL := https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js
 
 check-deps:
 	@test -n "$(GO_BIN)" || (printf "✗ Go not installed\n" && exit 1)
@@ -40,17 +41,16 @@ setup-tailwind:
 	@echo -e $(TAILWIND_CONFIG) > tailwind.config.js
 	@echo -e '@import "tailwindcss"' > $(STATIC_DIR)/css/input.css
 
-download-alpine:
+download-deps:
 	@curl -s $(ALPINE_URL) -o $(STATIC_DIR)/js/alpine.min.js
+	@curl -s $(HTMX_URL) -o $(STATIC_DIR)/js/htmx.min.js
 
 templ:
 	@$(TEMPL_BIN) generate
 
-css: updateDepends
-	@$(BUN_BIN) exec "tailwindcss -i $(STATIC_DIR)/css/input.css -o $(STATIC_DIR)/css/styles.css --minify"
-
-updateDepends:
+css: 
 	@$(BUN_BIN) update tailwindcss@latest >/dev/null 2>&1
+	@$(BUN_BIN) exec "tailwindcss -i $(STATIC_DIR)/css/input.css -o $(STATIC_DIR)/css/styles.css --minify"
 
 serve: templ css
 	@$(GO_BIN) run ./cmd/main.go serve --http ${ROUTE}
