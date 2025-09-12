@@ -1,11 +1,12 @@
 package pages
 
 import "williamsLab/views/layouts"
+import "williamsLab/views/components"
 
 var pubTitle = "Publications"
 
 templ PublicationsPage() {
 	@layouts.BaseLayout(pubTitle) {
-		<h1>Publications Page</h1>
+    @components.Hero(pubTitle)
 	}
 }
