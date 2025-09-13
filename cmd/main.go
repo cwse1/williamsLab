@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"williamsLab/handlers"
+	"williamsLab/middlewares"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
@@ -18,9 +19,10 @@ func main() {
 
 	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
 		se.Router.GET("/static/{path...}", apis.Static(os.DirFS("./static"), false))
-
-		se.Router.GET("/", routes.Home)
+		
+		se.Router.GET("/{$}", routes.Home)
 		se.Router.GET("/publications", routes.Publications)
+		se.Router.GET("/publications/{path}", routes.PublicationAbstract).BindFunc(middlewares.ValidatePublication)
 		se.Router.GET("/about", routes.About)
 		se.Router.GET("/research", routes.Research)
 

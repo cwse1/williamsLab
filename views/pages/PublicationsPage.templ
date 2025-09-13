@@ -2,11 +2,20 @@ package pages
 
 import "williamsLab/views/layouts"
 import "williamsLab/views/components"
+import "williamsLab/models"
 
 var pubTitle = "Publications"
 
-templ PublicationsPage() {
+templ pubDisplay(pub models.Publication) {
+  <h2>{ pub.Title }</h2>
+}
+
+templ PublicationsPage(pubsDB []models.Publication) {
 	@layouts.BaseLayout(pubTitle) {
-    @components.Hero(pubTitle)
+		@components.Hero(pubTitle)
+		<hr class="m-6"/>
+		for _, pub := range pubsDB {
+      @pubDisplay(pub)
+		}
 	}
 }

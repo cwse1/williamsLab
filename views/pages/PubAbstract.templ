@@ -1,0 +1,12 @@
+package pages
+
+import "williamsLab/views/layouts"
+import "williamsLab/views/components"
+import "williamsLab/models"
+
+templ PubAbstract(path string, pub models.Publication) {
+	@layouts.BaseLayout(pubTitle) {
+		@components.Hero(pub.Title)
+    <h1>{ pub.PMID }</h1>
+	}
+}
