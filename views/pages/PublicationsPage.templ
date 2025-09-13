@@ -1,21 +1,28 @@
 package pages
 
-import "williamsLab/views/layouts"
-import "williamsLab/views/components"
-import "williamsLab/models"
+import (
+	"williamsLab/views/layouts"
+	"williamsLab/views/components"
+	"williamsLab/models"
+)
 
 var pubTitle = "Publications"
 
 templ pubDisplay(pub models.Publication) {
-  <h2>{ pub.Title }</h2>
+	<h2>{ pub.Title }</h2>
+	<h2>{ pub.Date }</h2>
 }
 
 templ PublicationsPage(pubsDB []models.Publication) {
 	@layouts.BaseLayout(pubTitle) {
 		@components.Hero(pubTitle)
 		<hr class="m-6"/>
-		for _, pub := range pubsDB {
-      @pubDisplay(pub)
-		}
+		<ul>
+			for _, pub := range pubsDB {
+				<li>
+					@pubDisplay(pub)
+				</li>
+			}
+		</ul>
 	}
 }

@@ -13,6 +13,6 @@ func ValidatePublication(e *core.RequestEvent) error {
 	if string(pub.PMID) == e.Request.PathValue("path") {
 		return e.Next()
 	} else {
-		return e.NotFoundError("Invalid Publication", err)
+		return HandleError(e, e.NotFoundError("invalid publication", err))
 	}
 }

@@ -7,9 +7,8 @@ type Publication struct {
 	Authors  string `db:"authors" json:"authors"`
 	Title    string `db:"title" json:"title"`
 	Journal  string
-	Year     int16
 	Date     string
-	Vol      string
+	Issue    string
 	DOI      string
 	Abstract string
 }

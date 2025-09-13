@@ -1,12 +1,25 @@
 package pages
 
-import "williamsLab/views/layouts"
-import "williamsLab/views/components"
-import "williamsLab/models"
+import (
+	"time"
+	"strconv"
+
+	"williamsLab/views/layouts"
+	"williamsLab/views/components"
+	"williamsLab/models"
+
+	"github.com/pocketbase/pocketbase/tools/types"
+)
+
+func parseYear(d string) string {
+	date, _ := time.Parse(types.DefaultDateLayout, d)
+	return strconv.Itoa(date.Year())
+}
 
 templ PubAbstract(path string, pub models.Publication) {
 	@layouts.BaseLayout(pubTitle) {
 		@components.Hero(pub.Title)
-    <h1>{ pub.PMID }</h1>
+		<h1>{ pub.PMID }</h1>
+		<h1>{ parseYear(pub.Date) }</h1>
 	}
 }

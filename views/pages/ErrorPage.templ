@@ -1,9 +1,14 @@
 package pages
 
-import "williamsLab/views/layouts"
+import (
+	"williamsLab/views/layouts"
 
-templ ErrorPage() {
-  @layouts.BaseLayout("Error") {
-    <h1>ERROR</h1>
-  }
+	"github.com/pocketbase/pocketbase/tools/router"
+)
+
+templ ErrorPage(err *router.ApiError) {
+	@layouts.BaseLayout("Error") {
+		<h1>{ err.Status }</h1>
+		<h2>{ err.Message }</h2>
+	}
 }
