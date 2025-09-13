@@ -19,7 +19,6 @@ func parseYear(d string) string {
 templ PubAbstract(path string, pub models.Publication) {
 	@layouts.BaseLayout(pubTitle) {
 		@components.Hero(pub.Title)
-		<h1>{ pub.PMID }</h1>
 		<h1>{ parseYear(pub.Date) }</h1>
 	}
 }
