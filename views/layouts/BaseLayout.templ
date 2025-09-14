@@ -24,7 +24,7 @@ templ BaseLayout(page string) {
 				</div>
 				@components.Navbar(page)
 			</header>
-			<main class="px-64">
+			<main class="flex flex-col px-64">
 				{ children... }
 			</main>
 			<hr class="m-6"/>

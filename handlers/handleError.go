@@ -1,7 +1,6 @@
-package middlewares
+package handlers
 
 import (
-	"williamsLab/handlers"
 	"williamsLab/views/pages"
 
 	"github.com/pocketbase/pocketbase/core"
@@ -9,5 +8,5 @@ import (
 )
 
 func HandleError(e *core.RequestEvent, err *router.ApiError) error {
-	return handlers.Render(e, pages.ErrorPage(err))
+	return Render(e, pages.ErrorPage(err))
 }

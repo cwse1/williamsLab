@@ -26,6 +26,7 @@ func main() {
 		se.Router.GET("/about", routes.About)
 		se.Router.GET("/research", routes.Research)
 
+		se.Router.GET("/", routes.Error)
 		return se.Next()
 	})
 

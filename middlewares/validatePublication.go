@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"williamsLab/handlers"
 	"williamsLab/models"
 
 	"github.com/pocketbase/dbx"
@@ -13,6 +14,6 @@ func ValidatePublication(e *core.RequestEvent) error {
 	if string(pub.PMID) == e.Request.PathValue("path") {
 		return e.Next()
 	} else {
-		return HandleError(e, e.NotFoundError("invalid publication", err))
+		return handlers.HandleError(e, e.NotFoundError("invalid publication", err))
 	}
 }

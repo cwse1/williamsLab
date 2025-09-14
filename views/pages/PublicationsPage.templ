@@ -4,23 +4,41 @@ import (
 	"williamsLab/views/layouts"
 	"williamsLab/views/components"
 	"williamsLab/models"
+	"time"
+	"github.com/pocketbase/pocketbase/tools/types"
+	"strconv"
 )
 
 var pubTitle = "Publications"
 
-templ pubDisplay(pub models.Publication) {
+type Date struct {
+	Year  string
+	Month string
+	Day   string
+}
+
+func parseDate(d string) Date {
+	parsed, _ := time.Parse(types.DefaultDateLayout, d)
+	date := Date{Year: strconv.Itoa(parsed.Year()), Month: strconv.Itoa(int(parsed.Month())), Day: strconv.Itoa(parsed.Day())}
+	return date
+}
+
+templ pubListDisplay(pub models.Publication) {
 	<h2>{ pub.Title }</h2>
-	<h2>{ pub.Date }</h2>
+	<h2>{ parseDate(pub.Date).Year }</h2>
 }
 
 templ PublicationsPage(pubsDB []models.Publication) {
 	@layouts.BaseLayout(pubTitle) {
 		@components.Hero(pubTitle)
-		<hr class="m-6"/>
+		<hr class="my-6"/>
+    <div class="mb-6">
+      preamble
+    </div>
 		<ul>
 			for _, pub := range pubsDB {
 				<li>
-					@pubDisplay(pub)
+					@pubListDisplay(pub)
 				</li>
 			}
 		</ul>

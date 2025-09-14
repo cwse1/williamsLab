@@ -29,6 +29,7 @@ func checkPath(path string, page string) string {
 
 templ navButton(path string, page string) {
 	@button.Button(button.Props{
+    Href: path,
 		Class: fmt.Sprintf("dark %s focus-visible:ring-0 focus-visible:border-b-4 focus-visible:border-b-black rounded-none hover:bg-unc-blue-alt hover:text-white", checkPath(path, page)),
 		Attributes: map[string]any{
 			"hx-get":      path,

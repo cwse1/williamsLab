@@ -2,16 +2,17 @@ package handlers
 
 import (
 	"williamsLab/models"
-	"williamsLab/services"
+	// "williamsLab/services"
 	"williamsLab/views/pages"
 
 	"github.com/a-h/templ"
 	"github.com/pocketbase/dbx"
+	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 )
 
 type RouteHandler struct {
-	PubService services.PubService
+	// PubService services.PubService
 }
 
 func Render(e *core.RequestEvent, t templ.Component) error {
@@ -20,6 +21,10 @@ func Render(e *core.RequestEvent, t templ.Component) error {
 
 func (h RouteHandler) Home(e *core.RequestEvent) error {
 	return Render(e, pages.HomePage())
+}
+
+func (h RouteHandler) Error(e *core.RequestEvent) error {
+	return Render(e, pages.ErrorPage(apis.NewNotFoundError("Route Not Found.", nil)))
 }
 
 func (h RouteHandler) Research(e *core.RequestEvent) error {
