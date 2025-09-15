@@ -1,15 +1,14 @@
 package pages
 
 import (
-	"williamsLab/views/layouts"
-	"williamsLab/views/components"
-	"williamsLab/models"
 	"time"
-	"github.com/pocketbase/pocketbase/tools/types"
 	"strconv"
-)
 
-var pubTitle = "Publications"
+	"williamsLab/views/layouts"
+	"williamsLab/models"
+
+	"github.com/pocketbase/pocketbase/tools/types"
+)
 
 type Date struct {
 	Year  string
@@ -19,23 +18,22 @@ type Date struct {
 
 func parseDate(d string) Date {
 	parsed, _ := time.Parse(types.DefaultDateLayout, d)
-	date := Date{Year: strconv.Itoa(parsed.Year()), Month: strconv.Itoa(int(parsed.Month())), Day: strconv.Itoa(parsed.Day())}
-	return date
+	return Date{Year: strconv.Itoa(parsed.Year()), Month: strconv.Itoa(int(parsed.Month())), Day: strconv.Itoa(parsed.Day())}
 }
 
 templ pubListDisplay(pub models.Publication) {
-	<h2>{ pub.Title }</h2>
-	<h2>{ parseDate(pub.Date).Year }</h2>
+	{ pub.Authors } <b><a class="cursor-pointer" hx-get={ "/publications/" + pub.PMID } hx-target="#contents" hx-push-url={ "/publications/" + pub.PMID }>{ pub.Title }</a></b> { pub.Journal }{ " " }
+	<a>{ pub.DOI }</a>
+	<p>{ parseDate(pub.Date).Year }</p>
 }
 
 templ PublicationsPage(pubsDB []models.Publication) {
-	@layouts.BaseLayout(pubTitle) {
-		@components.Hero(pubTitle)
+	@layouts.BaseLayout("Publications") {
 		<hr class="my-6"/>
-    <div class="mb-6">
-      preamble
-    </div>
-		<ul>
+		<div class="mb-6">
+			preamble
+		</div>
+		<ul class="">
 			for _, pub := range pubsDB {
 				<li>
 					@pubListDisplay(pub)

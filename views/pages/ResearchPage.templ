@@ -1,12 +1,8 @@
 package pages
 
 import "williamsLab/views/layouts"
-import "williamsLab/views/components"
-
-var researchTitle = "Research"
 
 templ ResearchPage() {
-	@layouts.BaseLayout(researchTitle) {
-    @components.Hero(researchTitle)
+	@layouts.BaseLayout("Research") {
 	}
 }

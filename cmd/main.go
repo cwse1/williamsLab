@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
 	"williamsLab/handlers"
 	"williamsLab/middlewares"
+	"williamsLab/services"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
@@ -17,6 +19,8 @@ func main() {
 
 	routes := handlers.RouteHandler{}
 
+	fmt.Println(services.Migrate())
+
 	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
 		se.Router.GET("/static/{path...}", apis.Static(os.DirFS("./static"), false))
 		
@@ -27,6 +31,7 @@ func main() {
 		se.Router.GET("/research", routes.Research)
 
 		se.Router.GET("/", routes.Error)
+
 		return se.Next()
 	})
 

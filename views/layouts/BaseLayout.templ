@@ -14,7 +14,7 @@ templ BaseLayout(page string) {
 			<script defer src="/static/js/alpine.min.js"></script>
 			<script src="/static/js/htmx.min.js"></script>
 		</head>
-		<body id="contents">
+		<body id="contents" hx-boost="true">
 			<header class="bg-unc-blue flex px-64 mb-6 top-0 sticky">
 				<div class="mr-4">
 					<img src="/static/assets/img/1Dspectrum_black.png" class="h-8 invert saturate-100 brightness-0"/>
@@ -25,6 +25,7 @@ templ BaseLayout(page string) {
 				@components.Navbar(page)
 			</header>
 			<main class="flex flex-col px-64">
+				@components.Hero(page)
 				{ children... }
 			</main>
 			<hr class="m-6"/>

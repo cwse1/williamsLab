@@ -1,12 +1,8 @@
 package pages
 
 import "williamsLab/views/layouts"
-import "williamsLab/views/components"
-
-var homeTitle = "Home"
 
 templ HomePage() {
-	@layouts.BaseLayout(homeTitle) {
-    @components.Hero(homeTitle)
+	@layouts.BaseLayout("Home") {
 	}
 }

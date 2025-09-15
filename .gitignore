@@ -5,5 +5,5 @@ pb_data/
 node_modules/
 package.json
 Makefile.example
-*.md
+PLAN.md
 static/css/styles.css

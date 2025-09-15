@@ -1,12 +1,8 @@
 package pages
 
 import "williamsLab/views/layouts"
-import "williamsLab/views/components"
-
-var aboutTitle = "About"
 
 templ AboutPage() {
-	@layouts.BaseLayout(aboutTitle) {
-    @components.Hero(aboutTitle)
+	@layouts.BaseLayout("About") {
 	}
 }

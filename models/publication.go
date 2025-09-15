@@ -2,10 +2,10 @@ package models
 
 type Publication struct {
 	id       string
-	PMID     string `db:"pmid" json:"pmid"`
+	PMID     string
 	PMCID    string
-	Authors  string `db:"authors" json:"authors"`
-	Title    string `db:"title" json:"title"`
+	Authors  string
+	Title    string
 	Journal  string
 	Date     string
 	Issue    string
