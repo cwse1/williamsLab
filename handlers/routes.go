@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"williamsLab/models"
-	// "williamsLab/services"
 	"williamsLab/views/pages"
 
 	"github.com/a-h/templ"
@@ -12,7 +11,6 @@ import (
 )
 
 type RouteHandler struct {
-	// PubService services.PubService
 }
 
 func Render(e *core.RequestEvent, t templ.Component) error {

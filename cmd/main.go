@@ -1,17 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
 	"williamsLab/handlers"
 	"williamsLab/middlewares"
-	"williamsLab/services"
+	_ "williamsLab/migrations"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 )
 
 func main() {
@@ -19,7 +19,9 @@ func main() {
 
 	routes := handlers.RouteHandler{}
 
-	fmt.Println(services.Migrate())
+	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
+		Automigrate: app.IsDev(),
+	})
 
 	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
 		se.Router.GET("/static/{path...}", apis.Static(os.DirFS("./static"), false))
