@@ -8,35 +8,11 @@ import (
 	"net/http"
 	"strings"
 
+	"williamsLab/models"
+
 	"github.com/pocketbase/pocketbase/core"
 	m "github.com/pocketbase/pocketbase/migrations"
 )
-
-type SearchQuery struct {
-	XMLName xml.Name `xml:"eSearchResult"`
-	IdList  struct {
-		Ids []string `xml:"Id"`
-	} `xml:"IdList"`
-}
-
-type ArticleSet struct {
-	XMLName       xml.Name `xml:"PubmedArticleSet"`
-	PubmedArticle []struct {
-		PMID    string `xml:"PMID"`
-		Article struct {
-			Journal struct {
-				JournalIssue struct {
-					PubDate struct {
-						Year  string `xml:"Year"`
-						Month string `xml:"Month"`
-						Day   string `xml:"Day"`
-					} `xml:"PubDate"`
-				} `xml:"JournalIssue"`
-			} `xml:"Journal"`
-			Title string `xml:"ArticleTitle"`
-		} `xml:"MedlineCitation>Article"`
-	} `xml:"PubmedArticle"`
-}
 
 func getIds() []string {
 	r, err := http.Get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Williams+DC+Jr[author]&retmax=50")
@@ -48,21 +24,21 @@ func getIds() []string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var search SearchQuery
+	var search models.SearchQuery
 	if err := xml.Unmarshal([]byte(body), &search); err != nil {
 		log.Fatal(err)
 	}
 	return search.IdList.Ids
 }
 
-func getArticles() ArticleSet {
+func getArticles() models.ArticleSet {
 	ids := getIds()
 	r, err := http.Get(fmt.Sprintf("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=%v&retmode=xml", strings.Join(ids, ",")))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer r.Body.Close()
-	var list ArticleSet
+	var list models.ArticleSet
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
@@ -78,6 +54,14 @@ func populatePublications(app core.App, pubs *core.Collection) {
 	for _, p := range set.PubmedArticle {
 		rec := core.NewRecord(pubs)
 		rec.Set("pmid", p.PMID)
+		var doi string
+		for _, id := range p.ArticleIds {
+			if id.Type == "doi" {
+				doi = id.Value
+			}
+		}
+		rec.Set("doi", doi)
+		rec.Set("title", p.Article.Title)
 		app.Save(rec)
 	}
 }
@@ -86,7 +70,17 @@ func init() {
 	m.Register(func(app core.App) error {
 		pubs := core.NewBaseCollection("publications")
 
-		pubs.Fields.Add(&core.TextField{Name: "pmid"})
+		pubs.Fields.Add(
+			&core.TextField{
+				Name: "pmid",
+			},
+			&core.TextField{
+				Name: "doi",
+			},
+			&core.TextField{
+				Name: "title",
+			},
+		)
 
 		app.Save(pubs)
 

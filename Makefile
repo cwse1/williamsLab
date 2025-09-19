@@ -60,6 +60,9 @@ clean:
 	@rm -rf $(TEMP_DIR)
 	@find . -type f -name "*_templ.go" -delete
 
+dbclean:
+	@rm -rf ./pb_data
+
 watch:
 	@find views -type f -name "*.templ" | entr -r make serve
 

@@ -25,7 +25,7 @@ func main() {
 
 	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
 		se.Router.GET("/static/{path...}", apis.Static(os.DirFS("./static"), false))
-		
+
 		se.Router.GET("/{$}", routes.Home)
 		se.Router.GET("/publications", routes.Publications)
 		se.Router.GET("/publications/{path}", routes.PublicationAbstract).BindFunc(middlewares.ValidatePublication)
