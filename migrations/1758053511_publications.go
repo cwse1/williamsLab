@@ -7,11 +7,13 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"williamsLab/models"
 
 	"github.com/pocketbase/pocketbase/core"
 	m "github.com/pocketbase/pocketbase/migrations"
+	"github.com/pocketbase/pocketbase/tools/types"
 )
 
 func getIds() []string {
@@ -53,15 +55,42 @@ func populatePublications(app core.App, pubs *core.Collection) {
 	set := getArticles()
 	for _, p := range set.PubmedArticle {
 		rec := core.NewRecord(pubs)
-		rec.Set("pmid", p.PMID)
+
+		var authors string
 		var doi string
+		var date time.Time
+
+		if p.Article.JournalData.JournalIssue.PubDate.Month != "" {
+			if p.Article.JournalData.JournalIssue.PubDate.Day != "" {
+				date, _ = time.Parse("2006-Jan-02", strings.Join([]string{p.Article.JournalData.JournalIssue.PubDate.Year, p.Article.JournalData.JournalIssue.PubDate.Month, p.Article.JournalData.JournalIssue.PubDate.Day}, "-"))
+			} else {
+				date, _ = time.Parse("2006-Jan", strings.Join([]string{p.Article.JournalData.JournalIssue.PubDate.Year, p.Article.JournalData.JournalIssue.PubDate.Month}, "-"))
+			}
+		} else {
+			date, _ = time.Parse("2006", p.Article.JournalData.JournalIssue.PubDate.Year)
+		}
+
+		inputDate, _ := types.ParseDateTime(date)
+		for _, author := range p.Article.Authors {
+			if author.Suffix != "" {
+				authors += author.LastName + ", " + author.Initials + ". " + author.Suffix + "; "
+			} else {
+				authors += author.LastName + ", " + author.Initials + "; "
+			}
+		}
+
 		for _, id := range p.ArticleIds {
 			if id.Type == "doi" {
 				doi = id.Value
 			}
 		}
+
+		rec.Set("pmid", p.PMID)
 		rec.Set("doi", doi)
+		rec.Set("authors", authors)
 		rec.Set("title", p.Article.Title)
+		rec.Set("abstract", p.Article.Abstract)
+		rec.Set("date", inputDate)
 		app.Save(rec)
 	}
 }
@@ -78,7 +107,16 @@ func init() {
 				Name: "doi",
 			},
 			&core.TextField{
+				Name: "authors",
+			},
+			&core.TextField{
 				Name: "title",
+			},
+			&core.TextField{
+				Name: "abstract",
+			},
+			&core.DateField{
+				Name: "date",
 			},
 		)
 

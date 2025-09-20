@@ -4,11 +4,15 @@ import (
 	"williamsLab/views/layouts"
 	"williamsLab/views/components"
 	"williamsLab/models"
+	"williamsLab/utils"
 )
 
 templ PubAbstract(path string, pub models.Publication) {
 	@layouts.BaseLayout("Publications") {
 		@components.Hero(pub.Title)
-		<h1>{ parseDate(pub.Date).Year }</h1>
+		<h1>{ utils.ParseDate(pub.Date).Year }</h1>
+    <p>
+        { pub.Abstract }
+    </p>
 	}
 }

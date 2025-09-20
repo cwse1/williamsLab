@@ -1,18 +1,25 @@
 package models
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+)
 
 type Publication struct {
 	id       string
-	PMID     string
-	PMCID    string
-	Authors  string
-	Title    string
-	Journal  string
-	Date     string
-	Issue    string
-	DOI      string
-	Abstract string
+	PMID     string `db:"pmid"`
+	Authors  string `db:"authors"`
+	Title    string `db:"title"`
+	Journal  string `db:"journal"`
+	Date     string `db:"date"`
+	Issue    string `db:"issue"`
+	DOI      string `db:"doi"`
+	Abstract string `db:"abstract"`
+}
+
+type Date struct {
+	Year  string
+	Month string
+	Day   string
 }
 
 type SearchQuery struct {
@@ -34,7 +41,7 @@ type ArticleSet struct {
 					PubDate struct {
 						Year  string `xml:"Year"`
 						Month string `xml:"Month"`
-						Day   string `xml:"Day"`
+						Day   string `xml:"Day,omitempty"`
 					} `xml:"PubDate"`
 				} `xml:"JournalIssue"`
 				JournalTitle string `xml:"ISOAbbreviation"`
@@ -45,6 +52,7 @@ type ArticleSet struct {
 				LastName  string `xml:"LastName"`
 				FirstName string `xml:"FirstName"`
 				Initials  string `xml:"Initials"`
+				Suffix string `xml:"Suffix"`
 			} `xml:"AuthorList>Author"`
 		} `xml:"MedlineCitation>Article"`
 		ArticleIds []struct {
