@@ -10,7 +10,11 @@ import (
 templ PubAbstract(path string, pub models.Publication) {
 	@layouts.BaseLayout("Publications") {
 		@components.Hero(pub.Title)
-		<h1>{ utils.ParseDate(pub.Date).Year }</h1>
+		<h1>@date(utils.ParseDate(pub.Date))</h1>
+    <hr/>
+    <p>
+        <a href="/publications">back</a>
+    </p>
     <p>
         { pub.Abstract }
     </p>

@@ -36,8 +36,8 @@ type ArticleSet struct {
 		Article struct {
 			JournalData struct {
 				JournalIssue struct {
-					Volume  int32 `xml:"Volume"`
-					Issue   int32 `xml:"Issue"`
+					Volume  string `xml:"Volume"`
+					Issue   string `xml:"Issue"`
 					PubDate struct {
 						Year  string `xml:"Year"`
 						Month string `xml:"Month"`
@@ -52,7 +52,7 @@ type ArticleSet struct {
 				LastName  string `xml:"LastName"`
 				FirstName string `xml:"FirstName"`
 				Initials  string `xml:"Initials"`
-				Suffix string `xml:"Suffix"`
+				Suffix    string `xml:"Suffix"`
 			} `xml:"AuthorList>Author"`
 		} `xml:"MedlineCitation>Article"`
 		ArticleIds []struct {

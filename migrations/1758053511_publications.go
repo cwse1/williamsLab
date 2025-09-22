@@ -59,6 +59,7 @@ func populatePublications(app core.App, pubs *core.Collection) {
 		var authors string
 		var doi string
 		var date time.Time
+		var issue string
 
 		if p.Article.JournalData.JournalIssue.PubDate.Month != "" {
 			if p.Article.JournalData.JournalIssue.PubDate.Day != "" {
@@ -85,11 +86,19 @@ func populatePublications(app core.App, pubs *core.Collection) {
 			}
 		}
 
+		if p.Article.JournalData.JournalIssue.Issue != "" {
+			issue = p.Article.JournalData.JournalIssue.Volume + ":" + p.Article.JournalData.JournalIssue.Issue
+		} else {
+			issue = p.Article.JournalData.JournalIssue.Volume
+		}
+
 		rec.Set("pmid", p.PMID)
 		rec.Set("doi", doi)
 		rec.Set("authors", authors)
 		rec.Set("title", p.Article.Title)
 		rec.Set("abstract", p.Article.Abstract)
+		rec.Set("journal", p.Article.JournalData.JournalTitle)
+		rec.Set("issue", issue)
 		rec.Set("date", inputDate)
 		app.Save(rec)
 	}
@@ -114,6 +123,12 @@ func init() {
 			},
 			&core.TextField{
 				Name: "abstract",
+			},
+			&core.TextField{
+				Name: "journal",
+			},
+			&core.TextField{
+				Name: "issue",
 			},
 			&core.DateField{
 				Name: "date",

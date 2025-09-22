@@ -31,7 +31,7 @@ func (h RouteHandler) Research(e *core.RequestEvent) error {
 
 func (h RouteHandler) Publications(e *core.RequestEvent) error {
 	pubs := []models.Publication{}
-	e.App.DB().Select("*").From("publications").All(&pubs)
+	e.App.DB().Select("*").From("publications").OrderBy("date DESC").All(&pubs)
 	return Render(e, pages.PublicationsPage(pubs))
 }
 

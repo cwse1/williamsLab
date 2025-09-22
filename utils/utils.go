@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"strconv"
 	"time"
 
 	"williamsLab/models"
@@ -11,5 +10,5 @@ import (
 
 func ParseDate(d string) models.Date {
 	parsed, _ := time.Parse(types.DefaultDateLayout, d)
-	return models.Date{Year: strconv.Itoa(parsed.Year()), Month: strconv.Itoa(int(parsed.Month())), Day: strconv.Itoa(parsed.Day())}
+	return models.Date{Year: parsed.Format("2006"), Month: parsed.Format("Jan"), Day: parsed.Format("02")}
 }

@@ -6,11 +6,30 @@ import (
 	"williamsLab/utils"
 )
 
+templ title(title string, pmid string, abstract string) {
+	if abstract != "" {
+		<b><a class="hover:underline" href={ "/publications/" + pmid }>{ title }</a></b>
+	} else {
+		<b>{ title }</b>
+	}
+}
+
+templ date(d models.Date) {
+	if d.Day != "01" {
+		{ d.Year + " " + d.Month + " " + d.Day }
+	} else {
+		{ d.Year + " " + d.Month }
+	}
+}
+
 templ pubListDisplay(pub models.Publication) {
-	<b><a class="hover:underline" hx-get={ "/publications/" + pub.PMID } hx-target="#contents" hx-push-url={ "/publications/" + pub.PMID } href={ "/publications/" + pub.PMID }>{ pub.Title }</a></b>
-	<p>{ pub.Authors }</p> { pub.Journal }
-	<a href={ "https://doi.org/" + pub.DOI } target="_blank" class="underline">{ pub.DOI }</a>{ " " }
-	{ utils.ParseDate(pub.Date).Year }
+	@title(pub.Title, pub.PMID, pub.Abstract)
+	<p>{ pub.Authors }</p>
+	{ pub.Journal } { pub.Issue }
+	<span>
+		<i>@date(utils.ParseDate(pub.Date))</i>
+	</span>
+	<a href={ "https://doi.org/" + pub.DOI } target="_blank" class="underline">{ pub.DOI }</a>
 }
 
 templ PublicationsPage(pubsDB []models.Publication) {
@@ -21,7 +40,7 @@ templ PublicationsPage(pubsDB []models.Publication) {
 		</div>
 		<ul class="">
 			for _, pub := range pubsDB {
-				<li>
+				<li class="my-4">
 					@pubListDisplay(pub)
 				</li>
 			}
