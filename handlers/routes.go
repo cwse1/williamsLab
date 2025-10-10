@@ -42,5 +42,11 @@ func (h RouteHandler) PublicationAbstract(e *core.RequestEvent) error {
 }
 
 func (h RouteHandler) About(e *core.RequestEvent) error {
-	return Render(e, pages.AboutPage())
+	memberCollection, _ := e.App.FindCollectionByNameOrId("members")
+	id := memberCollection.Id
+	members := []models.LabMember{}
+	e.App.DB().Select("*").From("members").All(&members)
+	alumni := []models.LabAlumni{}
+	e.App.DB().Select("*").From("alumni").All(&alumni)
+	return Render(e, pages.AboutPage(members, id, alumni))
 }

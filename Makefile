@@ -29,7 +29,7 @@ create-dirs:
 	@mkdir -p $(STATIC_DIR)/js
 	@mkdir -p $(STATIC_DIR)/css
 	@mkdir -p views/{components,layouts,pages}
-	@mkdir -p {handlers,middlewares,models,services,utils}
+	@mkdir -p {handlers,middlewares,models,utils}
 	@mkdir -p $(BUILD_DIR)
 
 setup-go:
@@ -53,7 +53,7 @@ css:
 	@$(BUN_BIN) exec "tailwindcss -i $(STATIC_DIR)/css/input.css -o $(STATIC_DIR)/css/styles.css --minify"
 
 serve: templ css
-	@$(GO_BIN) run ./cmd/main.go serve --http ${ROUTE}
+	@$(GO_BIN) run ./cmd/williamsLab/main.go serve --http ${ROUTE}
 
 clean:
 	@rm -rf $(BUILD_DIR)

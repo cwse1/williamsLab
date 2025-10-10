@@ -16,15 +16,15 @@ templ BaseLayout(page string) {
 		</head>
 		<body id="contents" hx-boost="true">
 			<header class="bg-unc-blue flex px-64 mb-6 top-0 sticky">
-				<div class="mr-4">
-					<img src="/static/assets/img/1Dspectrum_black.png" class="h-8 invert saturate-100 brightness-0"/>
-				</div>
-				<div class="hidden lg:block text-nowrap overflow-hidden mr-auto text-white text-2xl font-bold">
-					Williams Lab
-				</div>
-				@components.Navbar(page)
+				<a class="cursor-pointer inline-flex mr-auto" href="/" hx-get="/" hx-target="#contents" hx-push-url="/">
+					<img src="/static/assets/img/1Dspectrum_black.png" class="h-8 invert saturate-100 brightness-0 mr-4"/>
+					<div class="hidden lg:block text-nowrap overflow-hidden text-white text-2xl font-bold">
+						Williams Lab
+					</div>
+				</a>
+				@components.Nav(page)
 			</header>
-			<main class="flex flex-col px-64">
+			<main class="flex flex-col px-80">
 				@components.Hero(page)
 				{ children... }
 			</main>

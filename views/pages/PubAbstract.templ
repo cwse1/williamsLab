@@ -2,21 +2,26 @@ package pages
 
 import (
 	"williamsLab/views/layouts"
-	"williamsLab/views/components"
 	"williamsLab/models"
 	"williamsLab/utils"
 )
 
 templ PubAbstract(path string, pub models.Publication) {
 	@layouts.BaseLayout("Publications") {
-		@components.Hero(pub.Title)
-		<h1>@date(utils.ParseDate(pub.Date))</h1>
-    <hr/>
-    <p>
-        <a href="/publications">back</a>
-    </p>
-    <p>
-        { pub.Abstract }
-    </p>
+		<h1>{ pub.Title }</h1>
+		<h1>
+			@date(utils.ParseDate(pub.Date))
+		</h1>
+		<hr/>
+		<p>
+			{ pub.Authors }
+		</p>
+		<hr/>
+		<p>
+			<a href="/publications">back</a>
+		</p>
+		<p>
+			{ pub.Abstract }
+		</p>
 	}
 }

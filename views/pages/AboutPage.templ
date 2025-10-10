@@ -1,8 +1,47 @@
 package pages
 
-import "williamsLab/views/layouts"
+import (
+	"io"
+	"context"
 
-templ AboutPage() {
+	"williamsLab/views/layouts"
+	"williamsLab/models"
+)
+
+func parseHTML(h string) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
+		_, err = io.WriteString(w, h)
+		return
+	})
+}
+
+templ activeMember(member models.LabMember, cId string) {
+	<div class="inline-flex">
+		<img class="basis-1/2 object-scale-down w-full pr-2" src={ "/api/files/" + cId + "/" + member.Id + "/" + member.Picture }/>
+		<div class="basis-1/2 pl-4 [&>ul]:list-disc">
+			@parseHTML(member.Description)
+		</div>
+	</div>
+}
+
+templ alums(alum models.LabAlumni) {
+	<div>
+		<span>{ alum.Name }</span>
+	</div>
+}
+
+templ AboutPage(members []models.LabMember, memberCollectionId string, alumni []models.LabAlumni) {
 	@layouts.BaseLayout("About") {
+		<ul class="flex-row">
+			for _, m := range members {
+				<li>
+					@activeMember(m, memberCollectionId)
+				</li>
+			}
+		</ul>
+		<hr/>
+		for _, a := range alumni {
+			@alums(a)
+		}
 	}
 }

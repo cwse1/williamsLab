@@ -8,6 +8,7 @@ import (
 	"williamsLab/middlewares"
 	_ "williamsLab/migrations"
 
+	"github.com/joho/godotenv"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
@@ -15,6 +16,10 @@ import (
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(".env could not load")
+	}
 	app := pocketbase.New()
 
 	routes := handlers.RouteHandler{}
@@ -37,7 +42,7 @@ func main() {
 		return se.Next()
 	})
 
-	err := app.Start()
+	err = app.Start()
 	if err != nil {
 		log.Fatal(err)
 	}

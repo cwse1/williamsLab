@@ -24,12 +24,17 @@ templ date(d models.Date) {
 
 templ pubListDisplay(pub models.Publication) {
 	@title(pub.Title, pub.PMID, pub.Abstract)
-	<p>{ pub.Authors }</p>
-	{ pub.Journal } { pub.Issue }
-	<span>
-		<i>@date(utils.ParseDate(pub.Date))</i>
-	</span>
-	<a href={ "https://doi.org/" + pub.DOI } target="_blank" class="underline">{ pub.DOI }</a>
+	<p>
+		{ pub.Journal } { pub.Issue }
+		<span>
+			<i>
+				(
+				@date(utils.ParseDate(pub.Date))
+				)
+			</i>
+		</span>
+		<a href={ "https://doi.org/" + pub.DOI } target="_blank" class="underline">{ pub.DOI }</a>
+	</p>
 }
 
 templ PublicationsPage(pubsDB []models.Publication) {

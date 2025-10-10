@@ -108,18 +108,25 @@ func init() {
 	m.Register(func(app core.App) error {
 		pubs := core.NewBaseCollection("publications")
 
+		minDate, _ := types.ParseDateTime("1990-01-01 00:00:00.000Z")
+		maxDate, _ := types.ParseDateTime("2099-12-31 23:59:59.999Z")
+
 		pubs.Fields.Add(
 			&core.TextField{
 				Name: "pmid",
+				Required: true,
 			},
 			&core.TextField{
 				Name: "doi",
+				Required: true,
 			},
 			&core.TextField{
 				Name: "authors",
+				Required: true,
 			},
 			&core.TextField{
 				Name: "title",
+				Required: true,
 			},
 			&core.TextField{
 				Name: "abstract",
@@ -132,6 +139,8 @@ func init() {
 			},
 			&core.DateField{
 				Name: "date",
+				Min:  minDate,
+				Max:  maxDate,
 			},
 		)
 

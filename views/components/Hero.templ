@@ -1,5 +1,14 @@
 package components
 
+func title(page string) string {
+	if page == "Home" {
+		return "Hematopathology"
+	}
+	return page
+}
+
 templ Hero(page string) {
- <h1>{ page }</h1> 
+	<div class="w-full text-center">
+		<h1>{ title(page) }</h1>
+	</div>
 }
