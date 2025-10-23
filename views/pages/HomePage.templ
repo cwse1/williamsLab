@@ -1,8 +1,18 @@
 package pages
 
 import "williamsLab/views/layouts"
+import "github.com/pocketbase/pocketbase/core"
+import "williamsLab/views/components"
 
-templ HomePage() {
+templ HomePage(content []*core.Record) {
 	@layouts.BaseLayout("Home") {
+		<hr class="my-6"/>
+		<div>
+			for _, c := range content {
+				for _, b := range c.ExpandedAll("content") {
+					@components.Block(b)
+				}
+			}
+		</div>
 	}
 }

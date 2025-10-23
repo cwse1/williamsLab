@@ -1,0 +1,42 @@
+package components
+
+import "williamsLab/utils"
+import "github.com/pocketbase/pocketbase/core"
+
+templ text(text string) {
+	@utils.ParseHTML(text)
+}
+
+templ image(rec *core.Record) {
+	<div>
+		<img src={ "/api/files/" + rec.Collection().Id + "/" + rec.Id + "/" + rec.GetString("image") }/>
+	</div>
+}
+
+templ imageLeft(rec *core.Record) {
+	<div>
+		<img src={ "/api/files/" + rec.Collection().Id + "/" + rec.Id + "/" + rec.GetString("image") }/>
+		<div>
+			@utils.ParseHTML(rec.GetString("text"))
+		</div>
+	</div>
+}
+
+templ heading(text string) {
+	<h1 id={ text[:5] }>{ text }</h1>
+}
+
+func Block(rec *core.Record) templ.Component {
+	if rec.Get("type") == nil {
+		return heading(rec.GetString("topic"))
+	}
+	switch rec.GetString("type") {
+	case "text":
+		return text(rec.GetString("content"))
+	case "image":
+		return image(rec)
+	case "imageLeft":
+		return imageLeft(rec)
+	}
+	return nil
+}

@@ -1,8 +1,21 @@
 package pages
 
 import "williamsLab/views/layouts"
+import "github.com/pocketbase/pocketbase/core"
+import "williamsLab/views/components"
 
-templ ResearchPage() {
+templ ResearchPage(topics []*core.Record) {
 	@layouts.BaseLayout("Research") {
+		<hr class="my-6"/>
+		<div>
+			for _, t := range topics {
+				@components.Block(t)
+				<div>
+					for _, b := range t.ExpandedAll("content") {
+						@components.Block(b)
+					}
+				</div>
+			}
+		</div>
 	}
 }

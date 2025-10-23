@@ -8,6 +8,7 @@ import (
 
 templ PubAbstract(path string, pub models.Publication) {
 	@layouts.BaseLayout("Publications") {
+		<hr class="my-6"/>
 		<h1>{ pub.Title }</h1>
 		<h1>
 			@date(utils.ParseDate(pub.Date))

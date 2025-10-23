@@ -1,45 +1,46 @@
 package pages
 
 import (
-	"io"
-	"context"
-
 	"williamsLab/views/layouts"
-	"williamsLab/models"
+	"williamsLab/utils"
+	"github.com/pocketbase/pocketbase/core"
+	"williamsLab/views/components"
 )
 
-func parseHTML(h string) templ.Component {
-	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
-		_, err = io.WriteString(w, h)
-		return
-	})
-}
-
-templ activeMember(member models.LabMember, cId string) {
+templ activeMember(member *core.Record) {
 	<div class="inline-flex">
-		<img class="basis-1/2 object-scale-down w-full pr-2" src={ "/api/files/" + cId + "/" + member.Id + "/" + member.Picture }/>
-		<div class="basis-1/2 pl-4 [&>ul]:list-disc">
-			@parseHTML(member.Description)
+		<img class="basis-1/2 object-scale-down w-full max-h-[500px] mr-2" src={ "/api/files/" + member.Collection().Id + "/" + member.Id + "/" + member.GetString("picture") }/>
+		<div class="basis-1/2 ml-4 [&>ul]:list-disc">
+			@utils.ParseHTML(member.GetString("description"))
 		</div>
 	</div>
 }
 
-templ alums(alum models.LabAlumni) {
+templ alums(alum *core.Record) {
 	<div>
-		<span>{ alum.Name }</span>
+		<span>{ alum.GetString("name") }</span>
 	</div>
 }
 
-templ AboutPage(members []models.LabMember, memberCollectionId string, alumni []models.LabAlumni) {
+templ AboutPage(members []*core.Record, alumni []*core.Record, preamble []*core.Record) {
 	@layouts.BaseLayout("About") {
+		<hr class="my-6"/>
+		<div>
+			for _, b := range preamble {
+				for _, p := range b.ExpandedAll("content") {
+					@components.Block(p)
+				}
+			}
+		</div>
+		<hr class="my-6"/>
 		<ul class="flex-row">
 			for _, m := range members {
 				<li>
-					@activeMember(m, memberCollectionId)
+					@activeMember(m)
 				</li>
 			}
 		</ul>
-		<hr/>
+		<hr class="my-6"/>
 		for _, a := range alumni {
 			@alums(a)
 		}

@@ -7,11 +7,31 @@ import (
 
 func init() {
 	m.Register(func(app core.App) error {
+		content := core.NewBaseCollection("about")
+
+		content.Fields.Add(
+			&core.NumberField{
+				Name:     "priority",
+				Required: true,
+			},
+			&core.RelationField{
+				Name:         "content",
+				CollectionId: ContentCollectionId,
+			},
+		)
+
+		app.Save(content)
+
 		members := core.NewBaseCollection("members")
 
 		members.Fields.Add(
+			&core.NumberField{
+				Name: "priority",
+				Required: true,
+			},
 			&core.TextField{
 				Name: "name",
+				Required: true,
 			},
 			&core.FileField{
 				Name:      "picture",
@@ -28,8 +48,13 @@ func init() {
 		alumni := core.NewBaseCollection("alumni")
 
 		alumni.Fields.Add(
+			&core.NumberField{
+				Name:     "priority",
+				Required: true,
+			},
 			&core.TextField{
-				Name: "name",
+				Name:     "name",
+				Required: true,
 			},
 			&core.TextField{
 				Name: "tenure",

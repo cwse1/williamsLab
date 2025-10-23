@@ -6,7 +6,6 @@ TEMPL_BIN := $(shell which templ)
 PROJECT_NAME := $(shell basename $(CURDIR))
 STATIC_DIR := static
 BUILD_DIR := build
-TEMP_DIR := tmp
 
 TAILWIND_CONFIG := 'module.exports = {\n\
   content: ["./views/**/*.templ"],\n\
@@ -25,7 +24,7 @@ check-deps:
 	@test -n "$(TEMPL_BIN)" || (printf "✗ templ not installed\n" && exit 1)
 
 create-dirs:
-	@mkdir cmd
+	@mkdir cmd/$(PROJECT_NAME)
 	@mkdir -p $(STATIC_DIR)/js
 	@mkdir -p $(STATIC_DIR)/css
 	@mkdir -p views/{components,layouts,pages}
@@ -53,7 +52,7 @@ css:
 	@$(BUN_BIN) exec "tailwindcss -i $(STATIC_DIR)/css/input.css -o $(STATIC_DIR)/css/styles.css --minify"
 
 serve: templ css
-	@$(GO_BIN) run ./cmd/williamsLab/main.go serve --http ${ROUTE}
+	@$(GO_BIN) run ./cmd/$(PROJECT_NAME)/main.go serve --http ${ROUTE}
 
 clean:
 	@rm -rf $(BUILD_DIR)
@@ -66,8 +65,8 @@ dbclean:
 watch:
 	@find views -type f -name "*.templ" | entr -r make serve
 
-init: check-deps create-dirs setup-go setup-tailwind download-alpine
+init: check-deps create-dirs setup-go setup-tailwind download-deps
 
-build: check-deps
-	@$(GO_BIN) build -o $(BUILD_DIR)/$(PROJECT_NAME) ./main.go
+build: check-deps templ css
+	@$(GO_BIN) build -o $(BUILD_DIR)/$(PROJECT_NAME) ./cmd/$(PROJECT_NAME)/main.go
 

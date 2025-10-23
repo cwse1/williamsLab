@@ -1,0 +1,13 @@
+pb_data/
+node_modules/
+build/
+.git
+*.json
+*.md
+*.templ
+Makefile
+input.css
+bun.lock
+.gitignore
+tailwind.config.js
+*.tar
