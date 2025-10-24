@@ -1,8 +1,11 @@
 package pages
 
-import "williamsLab/views/layouts"
-import "github.com/pocketbase/pocketbase/core"
-import "williamsLab/views/components"
+import (
+	"williamsLab/views/layouts"
+	"williamsLab/views/components"
+
+	"github.com/pocketbase/pocketbase/core"
+)
 
 templ ResearchPage(topics []*core.Record) {
 	@layouts.BaseLayout("Research") {

@@ -1,7 +1,10 @@
 package components
 
-import "williamsLab/utils"
-import "github.com/pocketbase/pocketbase/core"
+import (
+	"williamsLab/utils"
+  
+	"github.com/pocketbase/pocketbase/core"
+)
 
 templ text(text string) {
 	@utils.ParseHTML(text)

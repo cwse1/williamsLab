@@ -1,15 +1,16 @@
 package pages
 
 import (
-	"williamsLab/views/layouts"
 	"williamsLab/utils"
-	"github.com/pocketbase/pocketbase/core"
+	"williamsLab/views/layouts"
 	"williamsLab/views/components"
+
+	"github.com/pocketbase/pocketbase/core"
 )
 
 templ activeMember(member *core.Record) {
 	<div class="inline-flex">
-		<img class="basis-1/2 object-scale-down w-full max-h-[500px] mr-2" src={ "/api/files/" + member.Collection().Id + "/" + member.Id + "/" + member.GetString("picture") }/>
+		<img class="basis-1/2 object-scale-down w-full max-h-[250px] md:max-h-[500px] mr-2" src={ "/api/files/" + member.Collection().Id + "/" + member.Id + "/" + member.GetString("picture") }/>
 		<div class="basis-1/2 ml-4 [&>ul]:list-disc">
 			@utils.ParseHTML(member.GetString("description"))
 		</div>
@@ -26,13 +27,14 @@ templ AboutPage(members []*core.Record, alumni []*core.Record, preamble []*core.
 	@layouts.BaseLayout("About") {
 		<hr class="my-6"/>
 		<div>
-			for _, b := range preamble {
-				for _, p := range b.ExpandedAll("content") {
+			for _, block := range preamble {
+				for _, p := range block.ExpandedAll("content") {
 					@components.Block(p)
 				}
 			}
 		</div>
 		<hr class="my-6"/>
+		<h2>Members</h2>
 		<ul class="flex-row">
 			for _, m := range members {
 				<li>
@@ -40,9 +42,13 @@ templ AboutPage(members []*core.Record, alumni []*core.Record, preamble []*core.
 				</li>
 			}
 		</ul>
-		<hr class="my-6"/>
-		for _, a := range alumni {
-			@alums(a)
-		}
+		<h2>Alumni</h2>
+		<ul>
+			for _, a := range alumni {
+				<li>
+					@alums(a)
+				</li>
+			}
+		</ul>
 	}
 }
