@@ -8,7 +8,8 @@ func title(page string) string {
 }
 
 templ Hero(page string) {
-	<div class="w-full text-center">
+	<div class="w-full relative text-center">
+		<img src={""} class="order-last"/>
 		<h1>{ title(page) }</h1>
 	</div>
 }

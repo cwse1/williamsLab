@@ -11,5 +11,5 @@ RUN chmod +x williamsLab
 
 EXPOSE 80
 
-CMD ["./williamsLab", "migrate"]
+# CMD ["./williamsLab", "migrate"]
 CMD ["./williamsLab", "serve", "--http=0.0.0.0:80"]
