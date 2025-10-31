@@ -31,7 +31,7 @@ func init() {
 		}
 
 		user := core.NewRecord(su)
-		user.Set("email", os.Getenv("SUPERUSER"))
+		user.Set("email", os.Getenv("INIT_SUPERUSER"))
 		user.Set("password", os.Getenv("SUPASS"))
 
 		err = app.Save(user)

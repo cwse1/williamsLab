@@ -25,7 +25,6 @@ templ alums(alum *core.Record) {
 
 templ AboutPage(members []*core.Record, alumni []*core.Record, preamble []*core.Record) {
 	@layouts.BaseLayout("About") {
-		<hr class="my-6"/>
 		<div>
 			for _, block := range preamble {
 				for _, p := range block.ExpandedAll("content") {

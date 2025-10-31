@@ -1,6 +1,6 @@
 {
   "componentsDir": "views/components/templui",
-  "utilsDir": "internal/utils",
+  "utilsDir": "utils",
   "moduleName": "williamsLab",
   "jsDir": "static/js",
   "jsPublicPath": "/static/js"

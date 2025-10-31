@@ -1,9 +1,6 @@
 *_templ.go
 .env
-bun.lock
 pb_data/
-node_modules/
-package.json
 PLAN.md
 static/css/styles.css
 *.tar

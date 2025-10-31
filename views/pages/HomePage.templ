@@ -9,7 +9,6 @@ import (
 
 templ HomePage(content []*core.Record) {
 	@layouts.BaseLayout("Home") {
-		<hr class="my-6"/>
 		<div>
 			for _, c := range content {
 				for _, b := range c.ExpandedAll("content") {

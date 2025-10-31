@@ -24,6 +24,8 @@ func main() {
 
 	routes := handlers.RouteHandler{}
 
+	recordValidation := middlewares.ValidateRecord{}
+
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{})
 
 	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
@@ -39,6 +41,8 @@ func main() {
 
 		return se.Next()
 	})
+
+	app.OnRecordValidate("content").BindFunc(recordValidation.ValidateMultiFiles)
 
 	err = app.Start()
 	if err != nil {

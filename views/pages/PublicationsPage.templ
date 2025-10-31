@@ -4,6 +4,7 @@ import (
 	"williamsLab/views/layouts"
 	"williamsLab/models"
 	"williamsLab/utils"
+	"slices"
 )
 
 templ title(title string, pmid string, abstract string) {
@@ -37,17 +38,34 @@ templ pubListDisplay(pub models.Publication) {
 	</p>
 }
 
+func years(pubs []models.Publication) []string {
+	var years []string
+	for _, pub := range pubs {
+		y := utils.ParseDate(pub.Date).Year
+		if !slices.Contains(years, y) {
+			years = append(years, y)
+		}
+	}
+	return years
+}
+
 templ PublicationsPage(pubsDB []models.Publication) {
 	@layouts.BaseLayout("Publications") {
-		<hr class="my-6"/>
 		<div class="mb-6">
 			preamble
 		</div>
 		<ul class="">
-			for _, pub := range pubsDB {
-				<li class="my-4">
-					@pubListDisplay(pub)
-				</li>
+			for _, year := range years(pubsDB) {
+				<a id={ year }>
+					<h1>{ year }</h1>
+				</a>
+				for _, pub := range pubsDB {
+					if utils.ParseDate(pub.Date).Year == year {
+						<li class="my-4">
+							@pubListDisplay(pub)
+						</li>
+					}
+				}
 			}
 		</ul>
 	}

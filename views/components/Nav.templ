@@ -8,6 +8,8 @@ import (
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+	"williamsLab/views/components/templui/sheet"
+	"williamsLab/views/components/templui/icon"
 )
 
 var routes = []string{"/research", "/publications", "/about"}
@@ -46,5 +48,37 @@ templ Nav(page string) {
 				</li>
 			}
 		</ul>
+	</nav>
+	<nav class="flex lg:hidden">
+		@sheet.Sheet(sheet.Props{
+			ID:    "mobile-nav",
+			Side:  sheet.SideTop,
+		}) {
+			@sheet.Trigger(sheet.TriggerProps{}) {
+				@button.Button(button.Props{
+					Variant: button.VariantLink,
+					Size:    button.SizeIcon,
+				}) {
+					@icon.Menu(icon.Props{Color: "white"})
+				}
+			}
+			@sheet.Content() {
+				@sheet.Header() {
+					@sheet.Title(sheet.TitleProps{
+						Class: "text-center",
+					}) {
+						Williams Lab
+					}
+					@sheet.Close() {
+						<div class="flex flex-col py-4 self-center text-center [&>a]:hover:text-unc-blue">
+							<a href="/" hx-get="/" hx-target="#contents" hx-push-url="/">Home</a>
+							for _, path := range routes {
+								<a href={ path } hx-get={ path } hx-target="#contents" hx-push-url={ path }>{ buttonLabel(path) }</a>
+							}
+						</div>
+					}
+				}
+			}
+		}
 	</nav>
 }

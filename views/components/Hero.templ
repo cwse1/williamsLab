@@ -7,9 +7,25 @@ func title(page string) string {
 	return page
 }
 
+func banner(page string) string {
+	switch page {
+	case "Home":
+		return ""
+	case "Research":
+		return ""
+	case "Publications":
+		return ""
+	case "About":
+		return ""
+	}
+	return ""
+}
+
 templ Hero(page string) {
-	<div class="w-full relative text-center">
-		<img src={""} class="order-last"/>
+	<div class="w-full text-center">
+		if banner(page) != "" {
+			<img class="blur-sm" src={ "/static/assets/img/" + banner(page) } class="order-last"/>
+		}
 		<h1>{ title(page) }</h1>
 	</div>
 }

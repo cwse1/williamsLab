@@ -2,7 +2,7 @@ package components
 
 import (
 	"williamsLab/utils"
-  
+
 	"github.com/pocketbase/pocketbase/core"
 )
 
@@ -11,17 +11,24 @@ templ text(text string) {
 }
 
 templ image(rec *core.Record) {
-	<div>
-		<img src={ "/api/files/" + rec.Collection().Id + "/" + rec.Id + "/" + rec.GetString("image") }/>
-	</div>
+	<img src={ "/api/files/" + rec.Collection().Id + "/" + rec.Id + "/" + rec.GetString("image") }/>
 }
 
 templ imageLeft(rec *core.Record) {
 	<div>
-		<img src={ "/api/files/" + rec.Collection().Id + "/" + rec.Id + "/" + rec.GetString("image") }/>
-		<div>
-			@utils.ParseHTML(rec.GetString("text"))
-		</div>
+		@image(rec)
+	</div>
+	<div>
+		@text(rec.GetString("content"))
+	</div>
+}
+
+templ imageRight(rec *core.Record) {
+	<div>
+		@text(rec.GetString("content"))
+	</div>
+	<div>
+		@image(rec)
 	</div>
 }
 
@@ -40,6 +47,8 @@ func Block(rec *core.Record) templ.Component {
 		return image(rec)
 	case "imageLeft":
 		return imageLeft(rec)
+	case "imageRight":
+		return imageRight(rec)
 	}
 	return nil
 }

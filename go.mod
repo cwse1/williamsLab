@@ -6,7 +6,7 @@ require github.com/pocketbase/pocketbase v0.30.1
 
 require (
 	github.com/Oudwins/tailwind-merge-go v0.2.0
-	github.com/a-h/templ v0.3.943
+	github.com/a-h/templ v0.3.960
 	github.com/joho/godotenv v1.5.1
 	github.com/pocketbase/dbx v1.11.0
 	golang.org/x/text v0.29.0

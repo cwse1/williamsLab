@@ -1,6 +1,12 @@
 package layouts
 
-import "williamsLab/views/components"
+import (
+	"williamsLab/views/components"
+	"williamsLab/views/components/templui/dropdown"
+	"williamsLab/views/components/templui/popover"
+	"williamsLab/views/components/templui/dialog"
+	"williamsLab/views/components/templui/copybutton"
+)
 
 templ BaseLayout(page string) {
 	<!DOCTYPE html>
@@ -13,9 +19,13 @@ templ BaseLayout(page string) {
 			<link rel="stylesheet" href="/static/css/styles.css"/>
 			<script defer src="/static/js/alpine.min.js"></script>
 			<script src="/static/js/htmx.min.js"></script>
+			@copybutton.Script()
+			@dialog.Script()
+			@dropdown.Script()
+			@popover.Script()
 		</head>
 		<body id="contents" hx-boost="true">
-			<header class="bg-unc-blue flex px-64 mb-6 top-0 sticky">
+			<header class="bg-unc-blue flex px-12 lg:px-64 mb-6 top-0 sticky">
 				<a class="cursor-pointer inline-flex mr-auto" href="/" hx-get="/" hx-target="#contents" hx-push-url="/">
 					<img src="/static/assets/img/1Dspectrum_black.png" class="h-8 invert saturate-100 brightness-0 mr-4"/>
 					<div class="hidden lg:block text-nowrap overflow-hidden text-white text-2xl font-bold">
@@ -24,12 +34,13 @@ templ BaseLayout(page string) {
 				</a>
 				@components.Nav(page)
 			</header>
-			<main class="flex flex-col px-80">
+			<main class="flex flex-col px-12 lg:px-64">
 				@components.Hero(page)
+				<hr class="my-6"/>
 				{ children... }
 			</main>
 			<hr class="m-6"/>
-			<footer class="px-64">
+			<footer class="px-12 lg:px-64">
 				@components.Footer()
 			</footer>
 		</body>

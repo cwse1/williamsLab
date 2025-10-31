@@ -1,5 +1,4 @@
 pb_data/
-node_modules/
 build/
 .git
 *.json
@@ -7,7 +6,6 @@ build/
 *.templ
 Makefile
 input.css
-bun.lock
 .gitignore
 tailwind.config.js
 *.tar

@@ -7,14 +7,21 @@ import (
 
 var ContentCollectionId string
 
+var BlockTypes = []string{
+	"text",
+	"image",
+	"imageLeft",
+	"imageRight",
+}
+
 func init() {
 	m.Register(func(app core.App) error {
 		content := core.NewBaseCollection("content")
 
 		content.Fields.Add(
 			&core.SelectField{
-				Name:   "type",
-				Values: []string{"text", "image", "imageLeft"},
+				Name:     "type",
+				Values:   BlockTypes,
 				Required: true,
 			},
 			&core.EditorField{
