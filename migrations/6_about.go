@@ -26,17 +26,16 @@ func init() {
 
 		members.Fields.Add(
 			&core.NumberField{
-				Name: "priority",
+				Name:     "priority",
 				Required: true,
 			},
 			&core.TextField{
-				Name: "name",
+				Name:     "name",
 				Required: true,
 			},
-			&core.FileField{
-				Name:      "picture",
-				MaxSelect: 1,
-				MimeTypes: []string{"image/avif", "image/webp", "image/png", "image/jpeg"},
+			&core.RelationField{
+				Name:         "image",
+				CollectionId: ImageCollectionId,
 			},
 			&core.EditorField{
 				Name: "description",

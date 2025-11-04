@@ -16,6 +16,7 @@ func init() {
 			},
 			&core.TextField{
 				Name:   "topic",
+				Min: 5,
 				Required: true,
 			},
 			&core.RelationField{

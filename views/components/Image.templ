@@ -1,0 +1,23 @@
+package components
+
+import (
+	"github.com/pocketbase/pocketbase/core"
+	"williamsLab/views/components/templui/aspectratio"
+	"williamsLab/utils"
+)
+
+templ Image(image *core.Record) {
+	<a href={ "/api/files/" + image.Collection().Id + "/" + image.Id + "/" + image.GetString("image") } target="_blank">
+		<div class="flex flex-col text-sm">
+			@aspectratio.AspectRatio(aspectratio.Props{
+				Ratio: aspectratio.RatioVideo,
+				Class: "overflow-hidden mb-2",
+			}) {
+				<img class="w-full h-full object-cover" alt={ image.GetString("alt") } src={ "/api/files/" + image.Collection().Id + "/" + image.Id + "/" + image.GetString("image") }/>
+			}
+			if image.GetString("caption") != "" {
+				@utils.ParseHTML(image.GetString("caption"))
+			}
+		</div>
+	</a>
+}

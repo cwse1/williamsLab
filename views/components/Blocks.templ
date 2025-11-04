@@ -10,30 +10,40 @@ templ text(text string) {
 	@utils.ParseHTML(text)
 }
 
-templ image(rec *core.Record) {
-	<img src={ "/api/files/" + rec.Collection().Id + "/" + rec.Id + "/" + rec.GetString("image") }/>
-}
-
 templ imageLeft(rec *core.Record) {
-	<div>
-		@image(rec)
-	</div>
-	<div>
-		@text(rec.GetString("content"))
+	<div class="flex flex-row">
+		<div class="basis-1/2 mr-2">
+			@Image(rec.ExpandedOne("images"))
+		</div>
+		<div class="basis-1/2 ml-2">
+			@text(rec.GetString("content"))
+		</div>
 	</div>
 }
 
 templ imageRight(rec *core.Record) {
-	<div>
-		@text(rec.GetString("content"))
+	<div class="flex flex-row">
+		<div class="basis-1/2 mr-2">
+			@text(rec.GetString("content"))
+		</div>
+		<div class="basis-1/2 ml-2">
+			@Image(rec.ExpandedOne("images"))
+		</div>
 	</div>
-	<div>
-		@image(rec)
+}
+
+templ imageTable(rec *core.Record) {
+	<div class="grid grid-cols-3 gap-4">
+		for _, img := range rec.ExpandedAll("images") {
+			<div class="relative">
+				@Image(img)
+			</div>
+		}
 	</div>
 }
 
 templ heading(text string) {
-	<h1 id={ text[:5] }>{ text }</h1>
+	<h1 class="mb-2" id={ text[:5] }>{ text }</h1>
 }
 
 func Block(rec *core.Record) templ.Component {
@@ -44,11 +54,13 @@ func Block(rec *core.Record) templ.Component {
 	case "text":
 		return text(rec.GetString("content"))
 	case "image":
-		return image(rec)
+		return Image(rec.ExpandedOne("images"))
 	case "imageLeft":
 		return imageLeft(rec)
 	case "imageRight":
 		return imageRight(rec)
+	case "imageTable":
+		return imageTable(rec)
 	}
 	return nil
 }

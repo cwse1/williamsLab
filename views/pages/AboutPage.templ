@@ -8,9 +8,9 @@ import (
 	"github.com/pocketbase/pocketbase/core"
 )
 
-templ activeMember(member *core.Record) {
+templ activeMember(member *core.Record, picture *core.Record) {
 	<div class="inline-flex">
-		<img class="basis-1/2 object-scale-down w-full max-h-[250px] md:max-h-[500px] mr-2" src={ "/api/files/" + member.Collection().Id + "/" + member.Id + "/" + member.GetString("picture") }/>
+		<img class="basis-1/2 object-scale-down w-full max-h-[250px] md:max-h-[500px] mr-2" src={ "/api/files/" + picture.Collection().Id + "/" + picture.Id + "/" + picture.GetString("picture") }/>
 		<div class="basis-1/2 ml-4 [&>ul]:list-disc">
 			@utils.ParseHTML(member.GetString("description"))
 		</div>
@@ -37,7 +37,7 @@ templ AboutPage(members []*core.Record, alumni []*core.Record, preamble []*core.
 		<ul class="flex-row">
 			for _, m := range members {
 				<li>
-					@activeMember(m)
+					@activeMember(m, m.ExpandedOne("image"))
 				</li>
 			}
 		</ul>

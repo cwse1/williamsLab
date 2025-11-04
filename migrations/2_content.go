@@ -6,16 +6,38 @@ import (
 )
 
 var ContentCollectionId string
+var ImageCollectionId string
 
 var BlockTypes = []string{
 	"text",
 	"image",
 	"imageLeft",
 	"imageRight",
+	"imageTable",
 }
 
 func init() {
 	m.Register(func(app core.App) error {
+		images := core.NewBaseCollection("images")
+
+		images.Fields.Add(
+			&core.FileField{
+				Name:      "image",
+				MaxSelect: 1,
+				MimeTypes: []string{"image/avif", "image/webp", "image/png", "image/jpeg"},
+			},
+			&core.EditorField{
+				Name: "caption",
+			},
+			&core.TextField{
+				Name: "alt",
+			},
+		)
+
+		ImageCollectionId = images.Id
+
+		app.Save(images)
+
 		content := core.NewBaseCollection("content")
 
 		content.Fields.Add(
@@ -27,10 +49,10 @@ func init() {
 			&core.EditorField{
 				Name: "content",
 			},
-			&core.FileField{
-				Name:      "image",
+			&core.RelationField{
+				Name: "images",
 				MaxSelect: 6,
-				MimeTypes: []string{"image/avif", "image/webp", "image/png", "image/jpeg"},
+				CollectionId: ImageCollectionId,
 			},
 		)
 

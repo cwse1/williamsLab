@@ -23,7 +23,7 @@ func (h RouteHandler) Error(e *core.RequestEvent) error {
 
 func (h RouteHandler) Home(e *core.RequestEvent) error {
 	content, _ := e.App.FindRecordsByFilter("home", "", "+priority", -1, 0)
-	if errs := e.App.ExpandRecords(content, []string{"content"}, nil); len(errs) > 0 {
+	if errs := e.App.ExpandRecords(content, []string{"content", "content.images"}, nil); len(errs) > 0 {
 		return Render(e, pages.ErrorPage(apis.NewApiError(400, "Failed to fetch page content.", errs)))
 	}
 	return Render(e, pages.HomePage(content))
@@ -31,7 +31,7 @@ func (h RouteHandler) Home(e *core.RequestEvent) error {
 
 func (h RouteHandler) Research(e *core.RequestEvent) error {
 	content, _ := e.App.FindRecordsByFilter("research", "", "+priority", -1, 0)
-	if errs := e.App.ExpandRecords(content, []string{"content"}, nil); len(errs) > 0 {
+	if errs := e.App.ExpandRecords(content, []string{"content", "content.images"}, nil); len(errs) > 0 {
 		return Render(e, pages.ErrorPage(apis.NewApiError(400, "Failed to fetch page content.", errs)))
 	}
 	return Render(e, pages.ResearchPage(content))
@@ -51,10 +51,13 @@ func (h RouteHandler) PublicationAbstract(e *core.RequestEvent) error {
 
 func (h RouteHandler) About(e *core.RequestEvent) error {
 	content, _ := e.App.FindRecordsByFilter("about", "", "+priority", -1, 0)
-	if errs := e.App.ExpandRecords(content, []string{"content"}, nil); len(errs) > 0 {
+	if errs := e.App.ExpandRecords(content, []string{"content", "content.images"}, nil); len(errs) > 0 {
 		return Render(e, pages.ErrorPage(apis.NewApiError(400, "Failed to fetch page content.", errs)))
 	}
 	members, _ := e.App.FindRecordsByFilter("members", "", "+priority", -1, 0)
+	if errs := e.App.ExpandRecords(members, []string{"image"}, nil); len(errs) > 0 {
+		return Render(e, pages.ErrorPage(apis.NewApiError(400, "Failed to fetch page content.", errs)))
+	}
 	alumni, _ := e.App.FindRecordsByFilter("alumni", "", "+priority", -1, 0)
 	return Render(e, pages.AboutPage(members, alumni, content))
 }
